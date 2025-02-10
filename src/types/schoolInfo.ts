@@ -1,5 +1,16 @@
 export type SchoolInfo = {
-    aboutUs: string;
+    aboutUs: {
+        inspirationalQuote: {
+            inspirationalQuoteAuthor: string;
+            inspirationalQuoteMessage: string;
+        };
+        messages: [{
+            messageBy: string;
+            messageContent: string;
+            messageTitle: string;
+            highlightedMessage: string;
+        }]
+    };
     latestNews: string;
     contactDetails: {
         email: string;

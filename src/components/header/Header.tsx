@@ -119,7 +119,7 @@ const Header = () => {
         </div>
 
         {/* School Header */}
-        <div className="w-full max-w-[1300px] mx-auto px-3 py-1 bg-white grid grid-flow-row md:grid-flow-col gap-4 shadow-sm">
+        <div className="w-full max-w-[1300px] mx-auto px-3 py-1 bg-white grid grid-flow-row md:grid-flow-col gap-4">
           <div className="flex justify-center items-center p-1">
             <div className="flex justify-center items-center">
               <img
@@ -196,7 +196,7 @@ const Header = () => {
         </div>
 
         {/* Navigation Bar */}
-        <div className="w-full max-w-[1200px] mx-auto bg-white shadow-md">
+        <div className="w-full max-w-[1200px] mx-auto bg-white">
           <NavbarLargeScreen
             isVisible={isVisible}
             handleNavClose={handleNavClose}

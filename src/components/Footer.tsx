@@ -7,8 +7,14 @@ import CallIcon from "@mui/icons-material/Call";
 import EmailIcon from "@mui/icons-material/Email";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import { Link } from "react-router-dom";
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "../Firebase";
+import { SchoolInfo } from "../types/schoolInfo";
+import { useEffect, useState } from "react";
 
 const Footer = () => {
+  const [schoolData, setSchoolData] = useState<SchoolInfo | null>(null);
+
   const FooterLinkItems = [
     { name: "Home", link: "/" },
     { name: "About Us", link: "/aboutus" },
@@ -33,6 +39,28 @@ const Footer = () => {
     { index: 4, icon: LinkedInIcon, link: "https://www.linkedin.com/a" },
     { index: 5, icon: InstagramIcon, link: "https://www.instagram.com/a" },
   ];
+
+  useEffect(() => {
+    getSchoolInfo();
+  }, []);
+
+  const getSchoolInfo = async () => {
+    try {
+      console.log("Get School Info");
+
+      const dataRef = doc(db, "WEBSITE_CONFIG", "websiteConfig");
+      const docSnap = await getDoc(dataRef);
+      if (docSnap.exists()) {
+        setSchoolData(docSnap.data() as SchoolInfo);
+        console.log("School Data:", docSnap.data());
+      } else {
+        console.log("No such document found");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <>
       <div className="w-full bg-primary-dark text-white ">
@@ -74,7 +102,7 @@ const Footer = () => {
             <div className="pb-10">
               <div className="p-2 text-2xl md:text-3xl flex">
                 <div className="border-b-2 border-white py-2">
-                  Apex International School
+                  {schoolData?.schoolName}
                 </div>
               </div>
             </div>
@@ -92,7 +120,11 @@ const Footer = () => {
                 <p className="text-sm text-gray-500 font-semibold ">
                   Contact Us
                 </p>
-                <p className="font-semibold">975759325,3759079020</p>
+                <p className="font-semibold">
+                  {schoolData?.contactDetails.phoneNumbers.map((item) => (
+                    <>{item} ,</>
+                  ))}
+                </p>
               </div>
             </div>
             <div className="p-1 flex flex-row gap-3 md:justify-center items-center">
@@ -103,7 +135,9 @@ const Footer = () => {
               </div>
               <div className="flex flex-col ">
                 <p className="text-sm text-gray-500 font-semibold ">Email Us</p>
-                <p className="font-semibold">apexinternational9020@gmail.com</p>
+                <p className="font-semibold">
+                  {schoolData?.contactDetails.email}
+                </p>
               </div>
             </div>
             <div className="px-1 flex flex-row gap-3 md:justify-center items-center">
@@ -115,8 +149,9 @@ const Footer = () => {
               <div className="flex flex-col ">
                 <p className="text-sm text-gray-500 font-semibold ">Address</p>
                 <p className="font-semibold">
-                  APEX INTERNATIONAL SCHOOL, Golhaiya (Choura), Po - Siyatand,
-                  Jamua, Giridih
+                  {schoolData?.schoolName}
+                  {", "}
+                  {schoolData?.schoolAddress}
                 </p>
               </div>
             </div>
